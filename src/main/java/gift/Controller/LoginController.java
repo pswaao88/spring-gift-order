@@ -20,6 +20,8 @@ public class LoginController {
     public ResponseEntity<String> getLogin(@RequestParam(value = "code") String code){
         var reponse = loginService.makeResponse(code);
         String accessToken = loginService.abstractToken(reponse);
+        String email = loginService.getEmailMadeById(accessToken);
+        loginService.signupMember(email);
         return ResponseEntity.ok().body(accessToken);
     }
 }

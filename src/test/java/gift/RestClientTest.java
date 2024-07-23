@@ -43,7 +43,5 @@ public class RestClientTest {
     void test2(){
         assertThat(kakaoProperties.getClientId()).isEqualTo("key");
         assertThat(kakaoProperties.getRedirectUrl()).isEqualTo("http://localhost:8080");
-        System.out.println(kakaoProperties.getClientId());
-        System.out.println(kakaoProperties.getRedirectUrl());
     }
 }

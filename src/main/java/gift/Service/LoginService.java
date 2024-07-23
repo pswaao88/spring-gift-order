@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gift.Model.KakaoProperties;
+import gift.Model.Member;
+import gift.Repository.MemberRepository;
 import java.net.URI;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class LoginService {
     @Autowired
     private KakaoProperties kakaoProperties;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     private final RestClient client = RestClient.builder().build();
 
     public ResponseEntity<String> makeResponse(String code){
@@ -34,7 +39,7 @@ public class LoginService {
         var response = client.post()
             .uri(URI.create(url))
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-            .body(body) // request
+            .body(body)
             .retrieve()
             .toEntity(String.class);
         if (response.getStatusCode() != HttpStatus.OK){
@@ -66,13 +71,16 @@ public class LoginService {
 
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> responseBody;
-        try {// body를 map으로 변환 후 토큰 추출
+        try {// body를 map으로 변환 후 id 추출
             responseBody = objectMapper.readValue(response.getBody(), Map.class);
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException(e);
         }
-
         return responseBody.get("id") + "@kakao.com";
+    }
+
+    public void signupMember(String email){ // 기본 비밀번호 id로 설정
+        memberRepository.save(new Member(null, email,email.replaceAll("@kakao.com", "")));
     }
 
 }
