@@ -20,9 +20,7 @@ public class LoginController {
     public ResponseEntity<String> getLogin(@RequestParam(value = "code") String code){
         var response = loginService.makeResponse(code);
         String accessToken = loginService.abstractToken(response);
-        System.out.println("!!!!!!!!!!"+accessToken);
         String id = loginService.getId(accessToken);
-        System.out.println("!!@@@@@!!"+id);
         loginService.signupMember(id);
         return ResponseEntity.ok().body(accessToken);
     }
