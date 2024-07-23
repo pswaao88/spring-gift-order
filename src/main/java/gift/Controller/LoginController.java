@@ -18,10 +18,10 @@ public class LoginController {
     // 인가 코드 받아와 토큰 추출
     @GetMapping("")
     public ResponseEntity<String> getLogin(@RequestParam(value = "code") String code){
-        var reponse = loginService.makeResponse(code);
-        String accessToken = loginService.abstractToken(reponse);
-        String email = loginService.getEmailMadeById(accessToken);
-        loginService.signupMember(email);
+        var response = loginService.makeResponse(code);
+        String accessToken = loginService.abstractToken(response);
+        String id = loginService.getId(accessToken);
+        loginService.signupMember(id);
         return ResponseEntity.ok().body(accessToken);
     }
 }

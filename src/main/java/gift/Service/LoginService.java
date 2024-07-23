@@ -1,13 +1,15 @@
 package gift.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import gift.Model.KakaoProperties;
 import gift.Model.Member;
 import gift.Repository.MemberRepository;
+
 import java.net.URI;
 import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -43,7 +45,7 @@ public class LoginService {
             .retrieve()
             .toEntity(String.class);
         if (response.getStatusCode() != HttpStatus.OK){
-            throw new IllegalArgumentException("에러");
+            throw new IllegalArgumentException("올바르지 않은 요청");
         }
         return response;
     }
@@ -54,12 +56,12 @@ public class LoginService {
         try {// body를 map으로 변환 후 토큰 추출
             responseBody = objectMapper.readValue(response.getBody(), Map.class);
         } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("변환 실패");
         }
         return (String)responseBody.get("access_token"); // Object로 받았으므로 String으로 캐스팅
     }
 
-    public String getEmailMadeById(String token){
+    public String getId(String token){
         var url = "https://kapi.kakao.com/v2/user/me";
 
         var response = client.post()
@@ -74,13 +76,13 @@ public class LoginService {
         try {// body를 map으로 변환 후 id 추출
             responseBody = objectMapper.readValue(response.getBody(), Map.class);
         } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException(e);
+            throw new IllegalArgumentException("변환 실패");
         }
-        return responseBody.get("id") + "@kakao.com";
+        return (String)responseBody.get("id");
     }
 
-    public void signupMember(String email){ // 기본 비밀번호 id로 설정
-        memberRepository.save(new Member(null, email,email.replaceAll("@kakao.com", "")));
+    public void signupMember(String id){ // 기본 비밀번호 id로 설정
+        memberRepository.save(new Member(null, id+"@kakao.com",id));
     }
 
 }

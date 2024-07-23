@@ -21,13 +21,13 @@ public class RestClientTest {
     private final RestClient client = RestClient.builder().build();
 
     @Test
-    void test1(){
+    void 요청이오는지확인(){
         var url = "https://kauth.kakao.com/oauth/token";
         var body = new LinkedMultiValueMap<>();
         body.add("grant_type", "authorization_code");
         body.add("client_id",kakaoProperties.getClientId());
         body.add("redirect_url",kakaoProperties.getRedirectUrl());
-        body.add("code","9Is5pfoVl6Jb-BvI95BTIyskRIq73yGEynvl6ObqNhpqaxUFQmHinAAAAAQKKiWOAAABkNg9QiVV7imzm104lw"); // 변수로 뺴야됨
+        body.add("code",""); // 변수
         var response = client.post()
             .uri(URI.create(url))
             .contentType(MediaType.APPLICATION_FORM_URLENCODED)
@@ -40,7 +40,7 @@ public class RestClientTest {
 
     }
     @Test
-    void test2(){
+    void 비밀키가저장되는지확인(){
         assertThat(kakaoProperties.getClientId()).isEqualTo("key");
         assertThat(kakaoProperties.getRedirectUrl()).isEqualTo("http://localhost:8080");
     }
