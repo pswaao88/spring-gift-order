@@ -78,11 +78,11 @@ public class LoginService {
         } catch (JsonProcessingException e) {
             throw new IllegalArgumentException("변환 실패");
         }
-        return (String)responseBody.get("id");
+        return responseBody.get("id").toString();
     }
 
-    public void signupMember(String id){ // 기본 비밀번호 id로 설정
-        memberRepository.save(new Member(null, id+"@kakao.com",id));
+    public Member signupMember(String id){ // 기본 비밀번호 id로 설정
+        return memberRepository.save(new Member(null, id+"@kakao.com",id));
     }
 
 }
