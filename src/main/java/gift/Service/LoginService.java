@@ -86,7 +86,7 @@ public class LoginService {
         return responseBody.get("id").toString();
     }
 
-    public Member findMember(String id){
+    public Member getMemberOrSignup(String id){
         Member checkMember = memberRepository.findByEmail(id+"@kakao.com");
         if(checkMember == null){
             checkMember = signupMember(id);

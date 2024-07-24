@@ -52,7 +52,7 @@ public class LoginTest {
         var response = loginService.makeResponse("VPw0Io5LfRC3VJR5mJaRG3RB_Mke-wNF3ZYunZPNwVW5B-jyrdKfAwAAAAQKKiVQAAABkONPeD2t1856Xp2T3g");
         String accessToken = loginService.abstractToken(response);
         String id = loginService.getId(accessToken);
-        Member actual = loginService.findMember(id);
+        Member actual = loginService.getMemberOrSignup(id);
 
         assertThat(actual.getEmail()).isEqualTo(id+"@kakao.com");
         assertThat(actual.getPassword()).isEqualTo(id);
@@ -64,7 +64,7 @@ public class LoginTest {
         String accessToken = loginService.abstractToken(response);
         String id = loginService.getId(accessToken);
         Member expect = loginService.signupMember(id);
-        Member actual = loginService.findMember(id);
+        Member actual = loginService.getMemberOrSignup(id);
 
         assertThat(actual.getEmail()).isEqualTo(expect.getEmail());
         assertThat(actual.getPassword()).isEqualTo(expect.getPassword());
