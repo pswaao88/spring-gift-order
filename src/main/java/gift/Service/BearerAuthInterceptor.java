@@ -19,8 +19,8 @@ public class BearerAuthInterceptor implements HandlerInterceptor {
 
     @Override //
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String token = authExtractor.extract(request, "Bearer");//토큰 추출
-        if (StringUtils.isEmpty(token)) {// 토큰이 비어있는지 체크해 비어있으면 토큰을 비어있는 상태로 true
+        String token = authExtractor.extract(request);//토큰 추출
+        if (StringUtils.isEmpty(token)) {// 토큰이 비어있는지 체크해 비어있으면 토큰을 비어있으면 false
             return false;
         }
         String email = memberAccessTokenProvider.getEmail(token);//토큰을 디코딩해 email을 얻음
