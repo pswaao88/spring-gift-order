@@ -21,7 +21,7 @@ public class LoginController {
         var response = loginService.makeResponse(code);
         String accessToken = loginService.abstractToken(response);
         String id = loginService.getId(accessToken);
-        loginService.signupMember(id);
+        loginService.findMember(id);
         return ResponseEntity.ok().body(accessToken);
     }
 }

@@ -11,6 +11,7 @@ import java.net.URI;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -71,6 +72,10 @@ public class LoginService {
             .retrieve()
             .toEntity(String.class);
 
+        if (response.getStatusCode() != HttpStatus.OK){
+            throw new IllegalArgumentException("올바르지 않은 요청");
+        }
+
         ObjectMapper objectMapper = new ObjectMapper();
         Map<String, Object> responseBody;
         try {// body를 map으로 변환 후 id 추출
@@ -80,6 +85,15 @@ public class LoginService {
         }
         return responseBody.get("id").toString();
     }
+
+    public Member findMember(String id){
+        Member checkMember = memberRepository.findByEmail(id+"@kakao.com");
+        if(checkMember == null){
+            checkMember = signupMember(id);
+        }
+        return checkMember;
+    }
+
 
     public Member signupMember(String id){ // 기본 비밀번호 id로 설정
         return memberRepository.save(new Member(null, id+"@kakao.com",id));
