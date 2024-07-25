@@ -41,18 +41,12 @@ public class OrderController {
 
         String token = bearerToken.substring(6).trim();
         Option option = optionService.getOption(orderRequestDTO.getOptionId());
-        System.out.println("option 트랜잭션");
         Product orderProduct = option.getProduct();
         Member member = memberService.getMemberByEmail(loginService.getId(token)+"@kakao.com");
-        System.out.println("member 트랜잭션");
         int result = optionService.subtractQuantity(orderRequestDTO);
-        System.out.println("결과: " + result);
-        System.out.println("option 빼기");
         Long wishlistId = wishlistService.getWishlistId(member.getEmail(),orderProduct.getId());
-        System.out.println("wishlist 트랜잭션1");
         if (wishlistId != null){
             wishlistService.deleteWishlist(member.getEmail(),orderProduct.getId(),wishlistId);
-            System.out.println("wishlist 트랜잭션2");
         }
 
         SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
