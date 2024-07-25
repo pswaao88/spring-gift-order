@@ -5,32 +5,29 @@ import gift.Model.Option;
 import gift.Model.OrderRequestDTO;
 import gift.Model.OrderResponseDTO;
 import gift.Model.Product;
-import gift.Model.Wishlist;
+
 import gift.Service.LoginService;
 import gift.Service.MemberService;
 import gift.Service.OptionService;
 import gift.Service.OrderService;
 import gift.Service.ProductService;
 import gift.Service.WishlistService;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class OrderController {
-    private final ProductService productService;
     private final OptionService optionService;
     private final MemberService memberService;
     private final LoginService loginService;
     private final WishlistService wishlistService;
     private final OrderService orderService;
+    
     public OrderController(ProductService productService, OptionService optionService, MemberService memberService, LoginService loginService, WishlistService wishlistService, OrderService orderService){
-        this.productService = productService;
         this.optionService = optionService;
         this.memberService = memberService;
         this.loginService = loginService;
@@ -55,7 +52,10 @@ public class OrderController {
         if (wishlistId != null){
             wishlistService.deleteWishlist(member.getEmail(),orderProduct.getId(),wishlistId);
         }
+        // response 만들기
         OrderResponseDTO response = orderService.makeResponse(orderRequestDTO, orderProduct.getId());
-        return ResponseEntity.status(201).body(response);
+        // 메세지 보내기
+        orderService.sendMessage(orderRequestDTO.getMessage(), token);
+        return ResponseEntity.status(201).body(response); // 201코드와 response 리턴
     }
 }
