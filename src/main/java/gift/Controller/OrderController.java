@@ -9,6 +9,7 @@ import gift.Model.Wishlist;
 import gift.Service.LoginService;
 import gift.Service.MemberService;
 import gift.Service.OptionService;
+import gift.Service.OrderService;
 import gift.Service.ProductService;
 import gift.Service.WishlistService;
 import java.text.SimpleDateFormat;
@@ -27,37 +28,34 @@ public class OrderController {
     private final MemberService memberService;
     private final LoginService loginService;
     private final WishlistService wishlistService;
-
-    public OrderController(ProductService productService, OptionService optionService, MemberService memberService, LoginService loginService, WishlistService wishlistService){
+    private final OrderService orderService;
+    public OrderController(ProductService productService, OptionService optionService, MemberService memberService, LoginService loginService, WishlistService wishlistService, OrderService orderService){
         this.productService = productService;
         this.optionService = optionService;
         this.memberService = memberService;
         this.loginService = loginService;
         this.wishlistService = wishlistService;
+        this.orderService = orderService;
     }
 
     @PostMapping("/api/orders")
     public ResponseEntity<OrderResponseDTO> doOrder(@RequestHeader(value = "Authorization") String bearerToken, @RequestBody OrderRequestDTO orderRequestDTO) {
-
+        // Bearer 제거해 토큰 얻음
         String token = bearerToken.substring(6).trim();
+        // optionId를 통해 해당하는 option 가져오기
         Option option = optionService.getOption(orderRequestDTO.getOptionId());
+        // option에 해당하는 product 가져오기
         Product orderProduct = option.getProduct();
+        // 토큰으로 얻은 정보로 해당하는 member 가져오기
         Member member = memberService.getMemberByEmail(loginService.getId(token)+"@kakao.com");
+        // 해당하는 quantity만큼 option에서 빼기
         int result = optionService.subtractQuantity(orderRequestDTO);
+        // wishlistId가 존재 한다면 wishlist 삭제
         Long wishlistId = wishlistService.getWishlistId(member.getEmail(),orderProduct.getId());
         if (wishlistId != null){
             wishlistService.deleteWishlist(member.getEmail(),orderProduct.getId(),wishlistId);
         }
-
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date date = new Date(System.currentTimeMillis());
-
-        OrderResponseDTO response = new OrderResponseDTO();
-        response.setId(orderProduct.getId());
-        response.setOptionId(orderRequestDTO.getOptionId());
-        response.setQuantity(orderRequestDTO.getQuantity());
-        response.setOrderDateTime(formatter.format(date));
-        response.setMessage(orderRequestDTO.getMessage());
+        OrderResponseDTO response = orderService.makeResponse(orderRequestDTO, orderProduct.getId());
         return ResponseEntity.status(201).body(response);
     }
 }
