@@ -27,7 +27,7 @@ public class Option {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinColumn(name = "product_id", nullable = false)
     @JsonBackReference
     private Product product;
@@ -77,6 +77,9 @@ public class Option {
         }
         if(quantity < count){
             throw new IllegalArgumentException("빼려는 수보다 옵션의 수량이 작습니다.");
+        }
+        if(quantity == count ){
+            return 0; // option의 quantity가 0이되면 validation에 걸리므로 0을 리턴 후 service에서 삭제
         }
         return quantity -= count;
     }
