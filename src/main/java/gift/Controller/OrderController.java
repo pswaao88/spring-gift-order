@@ -45,13 +45,14 @@ public class OrderController {
         Product orderProduct = option.getProduct();
         // 토큰으로 얻은 정보로 해당하는 member 가져오기
         Member member = memberService.getMemberByEmail(loginService.getId(token)+"@kakao.com");
-        // 해당하는 quantity만큼 option에서 빼기
-        int result = optionService.subtractQuantity(orderRequestDTO);
         // wishlistId가 존재 한다면 wishlist 삭제
         Long wishlistId = wishlistService.getWishlistId(member.getEmail(),orderProduct.getId());
         if (wishlistId != null){
             wishlistService.deleteWishlist(member.getEmail(),orderProduct.getId(),wishlistId);
         }
+        // 해당하는 quantity만큼 option에서 빼기
+        int result = optionService.subtractQuantity(orderRequestDTO);
+
         // response 만들기
         OrderResponseDTO response = orderService.makeResponse(orderRequestDTO, orderProduct.getId());
         // 메세지 보내기
