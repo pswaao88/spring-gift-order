@@ -30,8 +30,8 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-    public Product getProductById(Long id){
-        return productRepository.findProductById(id);
+    public Product getProductById(Long productId){
+        return productRepository.findProductById(productId);
     }
 
     public Product addProduct(Product product){
@@ -45,9 +45,9 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void deleteProduct(Long id){
-        optionRepository.deleteByProductId(id);
-        productRepository.deleteById(id);
+    public void deleteProduct(Long productId){
+        optionRepository.deleteByProductId(productId);
+        productRepository.deleteById(productId);
     }
 
     public List<Category> getAllCategory(){

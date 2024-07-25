@@ -19,8 +19,8 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category getCategoryById(Long id){
-        return categoryRepository.findCategoryById(id);
+    public Category getCategoryById(Long categoryId){
+        return categoryRepository.findCategoryById(categoryId);
     }
 
     public Category addCategory(Category category){
@@ -31,10 +31,10 @@ public class CategoryService {
         return categoryRepository.save(category);
     }
 
-    public Category deleteCategory(Long id){
-        productRepository.deleteByCategoryId(id);
-        Category deleteCategories = categoryRepository.findCategoryById(id);
-        categoryRepository.deleteById(id);
+    public Category deleteCategory(Long categoryId){
+        productRepository.deleteByCategoryId(categoryId);
+        Category deleteCategories = categoryRepository.findCategoryById(categoryId);
+        categoryRepository.deleteById(categoryId);
         return deleteCategories;
     }
 }

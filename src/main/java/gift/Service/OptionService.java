@@ -19,6 +19,10 @@ public class OptionService {
         this.productRepository = productRepository;
     }
 
+    public Option getOption(Long optionId){
+        return optionRepository.findOptionById(optionId);
+    }
+
     public List<Option> getAllOptions(Long productId){
         return optionRepository.findAllById(productId);
     }
