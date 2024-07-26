@@ -17,4 +17,15 @@ public class OrderRequestDTO {
         return message;
     }
 
+    public void setOptionId(Long optionId) {
+        this.optionId = optionId;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }
