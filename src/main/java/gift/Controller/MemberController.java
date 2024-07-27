@@ -27,12 +27,12 @@ public class MemberController {
 
     @GetMapping("/api/login")
     public String getLogin(Model model) {
-        model.addAttribute("member",new Member(0L,"",""));
+        model.addAttribute("member",new Member(0L,"","",""));
         return "login";
     }
     @GetMapping("/api/signup")
     public String getSignup(Model model) {
-        model.addAttribute("member",new Member(0L,"",""));
+        model.addAttribute("member",new Member(0L,"","",""));
         return "signup";
     }
 

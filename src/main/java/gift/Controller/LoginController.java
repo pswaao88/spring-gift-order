@@ -24,7 +24,7 @@ public class LoginController {
         var response = loginService.makeResponse(code);
         String accessToken = loginService.abstractToken(response);
         String id = loginService.getId(accessToken);
-        loginService.getMemberOrSignup(id);
+        loginService.getMemberOrSignup(id, accessToken);
         String jwtToken = memberAccessTokenProvider.createJwt(id+"@kakao.com");
         return ResponseEntity.ok().body(jwtToken);
     }

@@ -26,15 +26,20 @@ public class Member {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @NotBlank
+    @Column(name = "accessToken", nullable = false)
+    private String accessToken;
+
     protected Member(){
 
     }
 
-    @ConstructorProperties({"id","email","password"})
-    public Member(Long id, String email, String password) {
+    @ConstructorProperties({"id","email","password","accessToken"})
+    public Member(Long id, String email, String password, String accessToken) {
         this.id = id;
         this.email = email;
         this.password = password;
+        this.accessToken = accessToken;
     }
 
     public Long getId() {
@@ -49,5 +54,7 @@ public class Member {
         return password;
     }
 
-
+    public String getAccessToken() {
+        return accessToken;
+    }
 }
