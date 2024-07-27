@@ -29,8 +29,8 @@ public class WishlistService {
 
     }
 
-    public Product getProductById(long id){
-        return productRepository.findProductById(id);
+    public Product getProductById(long productId){
+        return productRepository.findProductById(productId);
     }
 
     public Page<Product> getAllProducts(Pageable pageable) {
@@ -40,13 +40,13 @@ public class WishlistService {
         wishlistRepository.addProductInWishlist(memberId, productId);
     }
 
-    public Long getWishlistId(String email, long id){
-        return wishlistRepository.getWishlistIdByMemberEmailAndProductId(email, id);
+    public Long getWishlistId(String email, Long productId){
+        return wishlistRepository.getWishlistIdByMemberEmailAndProductId(email, productId);
     }
 
     public void deleteWishlist(String email, Long productId, Long wishlistId){
         wishlistRepository.changeProductMemberNull(email,productId);
-        wishlistRepository.deleteByWishlistId(wishlistId);
+        wishlistRepository.deleteById(wishlistId);
     }
 
     public void checkUserByMemberEmail(String email){

@@ -51,23 +51,23 @@ public class ProductController {
         return "redirect:/api/products";
     }
 
-    @GetMapping("/api/products/update/{id}")
-    public String editProductForm(@PathVariable(value = "id") Long id, Model model) {
-        Product product = productService.getProductById(id);
+    @GetMapping("/api/products/update/{productId}")
+    public String editProductForm(@PathVariable(value = "productId") Long productId, Model model) {
+        Product product = productService.getProductById(productId);
         model.addAttribute("product", product);
         model.addAttribute("categories", productService.getAllCategory());
         return "update";
     }
 
-    @PostMapping("/api/products/update/{id}")
-    public String updateProduct(@PathVariable(value = "id") Long id, @Valid @ModelAttribute Product newProduct) {
+    @PostMapping("/api/products/update/{productId}")
+    public String updateProduct(@PathVariable(value = "productId") Long productId, @Valid @ModelAttribute Product newProduct) {
         productService.updateProduct(newProduct);
         return "redirect:/api/products";
     }
 
-    @PostMapping("/api/products/delete/{id}")
-    public String deleteProduct(@PathVariable(value = "id") Long id) {
-        productService.deleteProduct(id);
+    @PostMapping("/api/products/delete/{productId}")
+    public String deleteProduct(@PathVariable(value = "productId") Long productId) {
+        productService.deleteProduct(productId);
         return "redirect:/api/products";
     }
 }

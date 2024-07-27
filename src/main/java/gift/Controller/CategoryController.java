@@ -27,9 +27,9 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryService.getAllCategory());
     }
 
-    @GetMapping("/api/category/{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable(value = "id") Long id){
-        return ResponseEntity.ok().body(categoryService.getCategoryById(id));
+    @GetMapping("/api/category/{categoryId}")
+    public ResponseEntity<Category> getCategoryById(@PathVariable(value = "categoryId") Long categoryId){
+        return ResponseEntity.ok().body(categoryService.getCategoryById(categoryId));
     }
 
     @PostMapping("/api/category")
@@ -42,8 +42,8 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryService.updateCategory(category));
     }
 
-    @DeleteMapping("/api/category/{id}")
-    public ResponseEntity<Category> deleteCategory(@PathVariable(value = "id") Long id){
-        return ResponseEntity.ok().body(categoryService.deleteCategory(id));
+    @DeleteMapping("/api/category/{categoryId}")
+    public ResponseEntity<Category> deleteCategory(@PathVariable(value = "categoryId") Long categoryId){
+        return ResponseEntity.ok().body(categoryService.deleteCategory(categoryId));
     }
 }

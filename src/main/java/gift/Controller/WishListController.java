@@ -39,22 +39,22 @@ public class WishListController {
         return "redirect:/api/wishlist";
     }
 
-    @PostMapping("/api/wish/add/{id}")
-    public String editWishForm(@PathVariable(value = "id") Long id, HttpServletRequest request) {
+    @PostMapping("/api/wishlist/add/{productId}")
+    public String editWishForm(@PathVariable(value = "productId") Long productId, HttpServletRequest request) {
         String email = (String) request.getAttribute("email");
         wishlistService.checkUserByMemberEmail(email);
         Member member = wishlistService.getMemberByEmail(email);
-        Product product = wishlistService.getProductById(id);
+        Product product = wishlistService.getProductById(productId);
         wishlistService.addWishlist(member.getId(), product.getId());
-        return "redirect:/api/wish";
+        return "redirect:/api/wishlist";
     }
 
-    @PostMapping("/api/wish/delete/{id}")
-    public String deleteWish(@PathVariable(value = "id") Long id, HttpServletRequest request) {
+    @PostMapping("/api/wishlist/delete/{productId}")
+    public String deleteWish(@PathVariable(value = "productId") Long productId, HttpServletRequest request) {
         String email = (String) request.getAttribute("email");
         wishlistService.checkUserByMemberEmail(email);
-        Long wishlistId = wishlistService.getWishlistId(email,id);
-        wishlistService.deleteWishlist(email, id,wishlistId);
-        return "redirect:/api/wish";
+        Long wishlistId = wishlistService.getWishlistId(email,productId);
+        wishlistService.deleteWishlist(email, productId, wishlistId);
+        return "redirect:/api/wishlist";
     }
 }

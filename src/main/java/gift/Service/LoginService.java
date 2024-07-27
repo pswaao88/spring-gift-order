@@ -3,6 +3,7 @@ package gift.Service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import gift.Model.KakaoLoginRequestDTO;
 import gift.Model.KakaoProperties;
 import gift.Model.Member;
 import gift.Repository.MemberRepository;
@@ -33,11 +34,7 @@ public class LoginService {
     public ResponseEntity<String> makeResponse(String code){
 
         var url = "https://kauth.kakao.com/oauth/token";
-        var body = new LinkedMultiValueMap<>();
-        body.add("grant_type", "authorization_code");
-        body.add("client_id",kakaoProperties.getClientId());
-        body.add("redirect_url",kakaoProperties.getRedirectUrl());
-        body.add("code",code);
+        var body = getbody(code);
 
         var response = client.post()
             .uri(URI.create(url))
@@ -49,6 +46,22 @@ public class LoginService {
             throw new IllegalArgumentException("올바르지 않은 요청");
         }
         return response;
+    }
+
+    private LinkedMultiValueMap<Object, Object> getbody(String code) {
+        KakaoLoginRequestDTO kakaoLoginRequestDTO = new KakaoLoginRequestDTO();
+
+        kakaoLoginRequestDTO.setGrantType("authorization_code");
+        kakaoLoginRequestDTO.setClientId(kakaoProperties.getClientId());
+        kakaoLoginRequestDTO.setRedirectUrl(kakaoProperties.getRedirectUrl());
+        kakaoLoginRequestDTO.setCode(code);
+
+        var body = new LinkedMultiValueMap<>();
+        body.add("grant_type", kakaoLoginRequestDTO.getGrantType());
+        body.add("client_id",kakaoLoginRequestDTO.getClientId());
+        body.add("redirect_url",kakaoLoginRequestDTO.getRedirectUrl());
+        body.add("code",kakaoLoginRequestDTO.getCode());
+        return body;
     }
 
     public String abstractToken(ResponseEntity<String> response){
@@ -86,7 +99,7 @@ public class LoginService {
         return responseBody.get("id").toString();
     }
 
-    public Member findMember(String id){
+    public Member getMemberOrSignup(String id){
         Member checkMember = memberRepository.findByEmail(id+"@kakao.com");
         if(checkMember == null){
             checkMember = signupMember(id);

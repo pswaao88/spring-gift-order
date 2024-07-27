@@ -39,6 +39,6 @@ public class OptionController {
 
     @DeleteMapping("/api/products/{productId}/options/{optionId}")
     public ResponseEntity<Option> deleteOption(@PathVariable(value = "productId") Long productId, @PathVariable(value = "optionId") Long optionId){
-        return ResponseEntity.ok().body(optionService.deleteOption(productId,optionId));
+        return ResponseEntity.ok().body(optionService.deleteOption(optionId));
     }
 }

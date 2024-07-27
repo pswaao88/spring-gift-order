@@ -116,7 +116,7 @@ public class WishlistRepositoryTest {
         wishlistRepository.addProductInWishlist(expectedMember.getId(), expectedMember.getId());
         Long actualId = wishlistRepository.getWishlistIdByMemberEmailAndProductId(expectedMember.getEmail(),expectedProduct.getId());
         wishlistRepository.changeProductMemberNull(expectedMember.getEmail(), expectedProduct.getId());
-        wishlistRepository.deleteByWishlistId(actualId);
+        wishlistRepository.deleteById(actualId);
 
         Wishlist actual = wishlistRepository.findWishlistById(actualId);
         assertThat(actual).isNull();
