@@ -23,7 +23,6 @@ public class LoginController {
         this.memberAccessTokenProvider = memberAccessTokenProvider;
     }
 
-    // 인가 코드 받아와 토큰 추출
     @Operation(
         summary = "카카오 로그인 하여 jwt 토큰 전달",
         description = "카카오 로그인을 통해서 정보를 가져와 해당하는 정보를 통해 회원가입을 or 로그인을 하여 jwt 토큰을 발급"
